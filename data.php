@@ -379,14 +379,14 @@
 foreach ($data as $tablet){
 	echo '<div class="data">';
 	echo '<div class="img">';
-	echo	'<img src="'.$tablet['mainPhoto']['url'].'" width="280">';	
+	echo	'<img src="'.htmlspecialchars($tablet['mainPhoto']['url']).'" width="280">';	
 	echo '</div>';
 	echo "<h2><b> Информация о навигаторе: </b></h2>". "<p>". 'Модель: '  .htmlspecialchars ($tablet['name']). 'id- '. htmlspecialchars ($tablet['id']). "<p>".' рейтинг-' .
 	htmlspecialchars($tablet['rating']). "<p>". 'Описание:' .htmlspecialchars ($tablet['description']). "<p>" .' Идентификатор категории: ' .htmlspecialchars( $tablet['categoryId']). "<p>". 'цена: '.
 	number_format($tablet['prices']['amount'],2,',',' '). " ".htmlspecialchars( $tablet['prices']['curCode']).
 	"<p>". 'Поставщик: '.htmlspecialchars ($tablet['vendor']).
 	"<p> Ссылка на yandex market:" .'<a href='.htmlspecialchars($tablet['link'])."'>";
-	echo $tablet['link'];
+	echo htmlspecialchars($tablet['link']);
 	echo "</a>";
 	echo '</div>' ;
 }
@@ -399,7 +399,7 @@ foreach ($data as $index => $tablet){
 	if(in_array($line,$vendors)){
 	}
 	else {
-		$vendors[$index]=$line;
+		$vendors[]=$line;
 	}
 }
 
@@ -407,10 +407,10 @@ echo "<p>" ;
 echo '<div class="data">';
 echo "<h2><b> Список производителей: </b></h2>";
 echo '</div>' ;
-foreach($vendors as $index => $vendor){
+foreach($vendors as $vendor){
 	$prices=[];
-	foreach ($data as $navindex => $tablet){
-		if($index==$navindex){
+	foreach ($data as $tablet){
+		if($vendor==$tablet['vendor']){
 			$prices[]=$tablet['prices']['amount'];
 		}
 	}
@@ -422,6 +422,6 @@ foreach($vendors as $index => $vendor){
 	}
 	echo '<div class="data">';
 	echo "<p>". htmlspecialchars($vendor)."</p>";
-	echo "<p>".'Минимальная цена: '  .htmlspecialchars ($min)."</p>";
+	echo "<p>".'Минимальная цена: '  .number_format($min,2,',',' ')." ".htmlspecialchars( $tablet['prices']['curCode'])."</p>";
 	echo '</div>' ;
 }
